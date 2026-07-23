@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Website</title>
+</head>
+<body>
+    <header>
+        <h1>Mini Shopping Cart</h1>
+    </header>
+    <main>
+        <section>
+            <div id="Login">
+                <h2>Login</h2>
+                <form>
+                   <br><br><label for="username"><b>Username:</b></label>
+                    <input type="text" id="username" name="username" required>
+                    <br><br><label for="password"><b>Password:</b></label>
+                <input type="password" id="password" name="password" required>
+                <br><br><button type="submit">Login</button>
+            </form>
+          </div>
+        </section>
+        <section id="Products">
+            <h2>Products</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Product Name</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Laptop</td>
+                        <td>$10.00</td>
+                        
+                    </tr>
+                    <tr>
+                        <td>Mouse</td>
+                        <td>$15.00</td>
+                    </tr>
+                    <tr>
+                        <td>Keyboard</td>
+                        <td>$20.00</td>
+                    </tr>
+                    <tr>
+                        <td>Monitor</td>
+                        <td>$25.00</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <br><br><label for="productSelect"><b>Select a product:</b></label>
+            <select id="productSelect">
+                <option value="laptop">Laptop</option>
+                <option value="mouse">Mouse</option>
+                <option value="keyboard">Keyboard</option>
+                <option value="monitor">Monitor</option>
+            </select>
+
+            <br><br><label for="quantity"><b>Quantity:</b></label>
+            <input type="number" id="quantity" name="quantity" min="1" value="1">
+            
+            <button type="button" id="addToCart">Add to Cart</button>
+        </section>
+
+        <section id="Cart">
+            <h2>Shopping Cart</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Product Name</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                        <th>Remove product</th>
+                        <th>Update product</th>
+                    </tr>
+                </thead>
+                <tbody id="cartItems">
+                </tbody>
+            </table>
+            <p id="cartTotal">Total: $0.00</p>
+
+            <button type="button" id="Discount">Apply Discount</button>
+            <button type="button" id="Checkout">Checkout</button>
+        </section>
+
+        <section id="Contact">
+            <h2>Contact Us</h2>
+            <form>
+                <br><br><label for="name"><b>Name:</b></label>
+                <input type="text" id="name" name="name" required>
+                <br><br><label for="email"><b>Email:</b></label>
+                <input type="email" id="email" name="email" required>
+                <br><br><label for="message"><b>Message:</b></label>
+                <textarea id="message" name="message" required></textarea>
+                <br><br><button type="submit">Send Message</button>
+            </form>
+        </section>
+    </main>
+    <script src="https://mail.google.com/mail/u/0/?tab=rm&ogbl#inbox"></script>
+</body>
+</html>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    header {
+        background-color: #333;
+        color: #fff;
+        padding: 1rem;
+        text-align: center;
+    }
+
+    main {
+        padding: 2rem;
+    }
+
+    section {
+        margin-bottom: 2rem;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 1rem;
+    }
+
+    th, td {
+        border: 1px solid #ddd;
+        padding: 0.5rem;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    button {
+        margin-top: 1rem;
+        padding: 0.5rem 1rem;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #45a049;
+    }
+</style>
+
+<script>
+const products = {
+    laptop: { name: 'Laptop', price: 10.00 },
+    mouse: { name: 'Mouse', price: 15.00 },
+    keyboard: { name: 'Keyboard', price: 20.00 },
+    monitor: { name: 'Monitor', price: 25.00 }
+};
+
+const cart = [];
+
+function login(event) {
+    if (event) event.preventDefault();
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+
+    if (username === 'admin' && password === '1234') {
+        alert('Login successful!');
+    } else {
+        alert('Invalid username or password.');
+    }
+}
+
+function addToCart() {
+    const productKey = document.getElementById('productSelect').value;
+    const quantityInput = document.getElementById('quantity');
+    const quantity = parseInt(quantityInput.value, 10);
+
+    if (!products[productKey]) {
+        alert('Please select a valid product.');
+        return;
+    }
+
+    if (quantity < 1 || Number.isNaN(quantity)) {
+        alert('Please enter a valid quantity.');
+        return;
+    }
+
+    const existingItem = cart.find(item => item.key === productKey);
+    if (existingItem) {
+        existingItem.quantity += quantity;
+    } else {
+        cart.push({
+            key: productKey,
+            name: products[productKey].name,
+            price: products[productKey].price,
+            quantity: quantity
+        });
+    }
+
+    quantityInput.value = 1;
+    updateCartDisplay();
+}
+
+function removeCartItem(key) {
+    const index = cart.findIndex(item => item.key === key);
+    if (index !== -1) {
+        cart.splice(index, 1);
+        updateCartDisplay();
+    }
+}
+
+function updateCartItem(key) {
+    const item = cart.find(i => i.key === key);
+    if (!item) return;
+
+    const newQuantity = parseInt(
+        prompt(`Enter new quantity for ${item.name}:`, item.quantity),
+        10
+    );
+
+    if (Number.isNaN(newQuantity) || newQuantity < 1) {
+        alert('Please enter a valid quantity.');
+        return;
+    }
+
+    item.quantity = newQuantity;
+    updateCartDisplay();
+}
+
+function updateCartDisplay() {
+    const cartItems = document.getElementById('cartItems');
+    cartItems.innerHTML = '';
+
+    cart.forEach(item => {
+        const total = item.price * item.quantity;
+        const row = document.createElement('tr');
+
+        row.innerHTML = `
+            <td>${item.name}</td>
+            <td>$${item.price.toFixed(2)}</td>
+            <td>${item.quantity}</td>
+            <td>$${total.toFixed(2)}</td>
+            <td><button type="button" class="removeButton" data-key="${item.key}">Remove</button></td>
+            <td><button type="Button" class="updateButton" data-key="${item.key}">Update</button></td>
+        `;
+
+        cartItems.appendChild(row);
+    });
+
+    calculateTotal();
+    attachRemoveButtons();
+    attachUpdateButtons();
+    
+}
+
+function attachRemoveButtons() {
+    const removeButtons = document.querySelectorAll('.removeButton');
+    removeButtons.forEach(button => {
+        button.removeEventListener('click', handleRemoveClick);
+        button.addEventListener('click', handleRemoveClick);
+    });
+}
+
+function handleRemoveClick(event) {
+    const key = event.target.getAttribute('data-key');
+    removeCartItem(key);
+}
+
+function attachUpdateButtons() {
+    const updateButtons = document.querySelectorAll('.updateButton');
+    updateButtons.forEach(button => {
+        button.addEventListener('click', handleUpdateClick);
+    });
+}
+
+function handleUpdateClick(event) {
+    const key = event.target.getAttribute('data-key');
+    updateCartItem(key);
+}
+
+function calculateTotal() {
+    const cartTotal = document.getElementById('cartTotal');
+    const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    cartTotal.textContent = `Total; $${total.toFixed(2)}`;
+}
+
+function applyDiscount() {
+    const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    const discounted = total * 0.90; // 10% discount
+    const cartTotal = document.getElementById('cartTotal');
+    cartTotal.textContent = `Total after discount: $${discounted.toFixed(2)}`;
+}
+
+function checkout() {
+    if (cart.length === 0) {
+        alert("Your cart is empty.");
+        return;
+    }
+
+    const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    alert("Total Amount: $" + total.toFixed(2));
+}
+
+function updateProduct(id, newName, newPrice, newStock) {
+
+    let product = products.find(item => item.id === id);
+
+    if (product) {
+        product.name = newName;
+        product.price = newPrice;
+        product.stock = newStock;
+
+        console.log(product);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const loginForm = document.querySelector('#Login form');
+    if (loginForm) loginForm.addEventListener('submit', login);
+
+    const addToCartButton = document.getElementById('addToCart');
+    if (addToCartButton) addToCartButton.addEventListener('click', addToCart);
+
+    const discountButton = document.getElementById('Discount');
+    if (discountButton) discountButton.addEventListener('click', applyDiscount);
+
+    const checkoutButton = document.getElementById('Checkout');
+    if (checkoutButton) checkoutButton.addEventListener('click', checkout);
+});
+</script>

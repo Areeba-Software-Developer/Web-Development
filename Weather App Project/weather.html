@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="weather.css">
+    <title>Weather App</title>
+</head>
+<body>
+<div>
+    <div class="bg-decor"><span></span><span></span><span></span></div>
+    <div class = "container">
+    <h1>Weather App</h1>
+
+    <div class = "search-box">
+        <input type="text" id="cityInput" placeholder="Enter city name" value="San Francisco">
+            <button id = "searchButton">
+                search
+            </button>
+        </div>
+    
+        <div class="weather-card" id="weatherCard">
+        <div class="spinner"></div>
+        <div class="weather-content">
+            <svg class="weather-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="24" cy="30" r="14" fill="#FFD966"/>
+                <path d="M40 44H20a10 10 0 1 1 2.6-19.7A14 14 0 0 1 48 30a8 8 0 0 1-8 14z" fill="#4facfe"/>
+            </svg>
+            <h2 id="cityName">San Francisco</h2>
+            <h3><span id = "temperature">21°C</span></h3>
+            <p id="description">Partly Cloudy</p>
+            <p id="humidity">Humidity: 62%</p>
+            <p id="wind">Wind: --</p>
+        </div>
+    </div>
+</div>
+</div>
+     <script src="weather.js"></script>
+
+</body>
+</html>
