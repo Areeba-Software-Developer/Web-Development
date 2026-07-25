@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tic · Tac · Toe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="game.css">
+</head>
+<body>
+    
+<div class="app">
+
+  <div class="scoreboard">
+    <div class="score score--x">
+      <span class="label">PLAYER X</span>
+      <span class="value" id="scoreX">0</span>
+    </div>
+    <div class="turn-indicator" id="turnIndicator" data-turn="X">
+      <span class="turn-dot"></span>
+      <span id="turnText">O to move</span>
+    </div>
+    <div class="score score--o">
+      <span class="label">PLAYER O</span>
+      <span class="value" id="scoreO">0</span>
+    </div>
+  </div>
+
+  <h1 class="title">TIC<span class="dot">·</span>TAC<span class="dot">·</span>TOE</h1>
+
+  <div class="board-wrap">
+    <div class="board" id="board" data-turn="X">
+      <button class="cell" data-index="0"></button>
+      <button class="cell" data-index="1"></button>
+      <button class="cell" data-index="2"></button>
+      <button class="cell" data-index="3"></button>
+      <button class="cell" data-index="4"></button>
+      <button class="cell" data-index="5"></button>
+      <button class="cell" data-index="6"></button>
+      <button class="cell" data-index="7"></button>
+      <button class="cell" data-index="8"></button>
+      <svg class="win-line" id="winLine" viewBox="0 0 300 300" preserveAspectRatio="none">
+        <line id="winLinePath" x1="0" y1="0" x2="0" y2="0" />
+      </svg>
+    </div>
+  </div>
+
+  <div class="controls">
+    <p class="status" id="status">O's turn</p>
+    <button class="reset-btn" id="resetBtn">Reset Round</button>
+  </div>
+
+</div>
+
+<script src="game.js"></script>
+
+</body>
+</html>
